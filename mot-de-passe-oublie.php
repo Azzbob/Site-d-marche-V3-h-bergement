@@ -26,14 +26,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $resultat = password_reset_create_token($pdo, $email);
 
+        $debugSmtp = '';
         if ($resultat) {
             $lien = app_base_url() . '/reinitialiser-mot-de-passe.php?token=' . urlencode($resultat['token']);
-            password_reset_send_email($resultat['user']['email'], $resultat['user']['prenom'], $lien);
+            $envoiOk = password_reset_send_email($resultat['user']['email'], $resultat['user']['prenom'], $lien);
+            if (!$envoiOk) {
+                $debugSmtp = $GLOBALS['smtp_last_error'] ?? 'Erreur inconnue';
+            }
         }
 
         // Même message qu'un compte existe ou non avec cet email,
         // pour ne pas révéler quelles adresses sont inscrites sur le site.
         $message = "Si un compte existe avec cette adresse, un email contenant un lien de réinitialisation vient de vous être envoyé. Pensez à vérifier vos spams.";
+
+        // ⚠️ DEBUG TEMPORAIRE — à retirer une fois le problème résolu
+        if ($debugSmtp) {
+            $message .= '<br><br><span style="color:#c00;font-weight:600">[DEBUG] ' . htmlspecialchars($debugSmtp) . '</span>';
+        }
     }
 }
 ?>
@@ -189,7 +198,7 @@ input::placeholder { color: #c0c0cc; }
   <?php endif; ?>
 
   <?php if ($message): ?>
-    <div class="alert alert--success"><?= htmlspecialchars($message) ?></div>
+    <div class="alert alert--success"><?= $message ?></div>
   <?php else: ?>
     <form method="POST" action="mot-de-passe-oublie.php">
       <?= csrf_field() ?>
