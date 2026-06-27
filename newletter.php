@@ -1,6 +1,6 @@
 <?php
 // ============================================================
-//  newsletter.php — Endpoint AJAX pour l'inscription newsletter
+//  newsletter.php — Inscription newsletter + email de bienvenue
 // ============================================================
 session_start();
 require_once 'smtp-config.php';
@@ -19,58 +19,77 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
-// Email de bienvenue HTML
-$sujet = 'Bienvenue dans la newsletter Liens Démarches !';
-$corps  = '<!DOCTYPE html>
+// Test si fsockopen est disponible (souvent bloqué sur InfinityFree)
+$socketTest = @fsockopen('smtp.gmail.com', 587, $errno, $errstr, 5);
+if (!$socketTest) {
+    // fsockopen bloqué — on tente avec mail() en fallback
+    $headers  = "From: Liens Démarches <azebob95@gmail.com>\r\n";
+    $headers .= "Reply-To: azebob95@gmail.com\r\n";
+    $headers .= "MIME-Version: 1.0\r\n";
+    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+
+    $corps = getEmailBody();
+
+    $sent = @mail($email, '=?UTF-8?B?' . base64_encode('Bienvenue dans la newsletter Liens Démarches !') . '?=', $corps, $headers);
+
+    if ($sent) {
+        echo json_encode(['ok' => true, 'msg' => 'Merci ! Un email de bienvenue vient de vous être envoyé.']);
+    } else {
+        echo json_encode(['ok' => false, 'msg' => 'Erreur : envoi impossible depuis ce serveur. Contactez-nous directement.', 'debug' => "fsockopen bloqué + mail() échoué"]);
+    }
+    exit;
+}
+fclose($socketTest);
+
+// fsockopen OK — on utilise SMTP
+$ok = smtp_send_mail($email, 'Bienvenue dans la newsletter Liens Démarches !', getEmailBody());
+
+if ($ok) {
+    echo json_encode(['ok' => true, 'msg' => 'Merci ! Un email de bienvenue vient de vous être envoyé.']);
+} else {
+    $erreur = $GLOBALS['smtp_last_error'] ?? 'erreur inconnue';
+    echo json_encode(['ok' => false, 'msg' => 'Erreur d\'envoi : ' . $erreur]);
+}
+
+function getEmailBody(): string {
+    return '<!DOCTYPE html>
 <html lang="fr">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<head><meta charset="UTF-8"></head>
 <body style="margin:0;padding:0;background:#f4f4f8;font-family:Segoe UI,system-ui,sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f8;padding:40px 0;">
     <tr><td align="center">
-      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(106,13,173,.10);">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;background:#ffffff;border-radius:16px;overflow:hidden;">
 
-        <!-- HEADER -->
         <tr>
-          <td style="background:linear-gradient(135deg,#3b006e 0%,#6a0dad 55%,#9b30ff 100%);padding:40px 40px 36px;text-align:center;">
-            <div style="width:64px;height:64px;background:rgba(255,255,255,.15);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;margin-bottom:18px;">
-              <span style="font-size:28px;color:#f5c842;">&#9733;</span>
-            </div>
-            <h1 style="margin:0;color:#ffffff;font-size:26px;font-weight:800;letter-spacing:.02em;">Liens D&eacute;marches</h1>
+          <td style="background:linear-gradient(135deg,#3b006e 0%,#6a0dad 55%,#9b30ff 100%);padding:40px;text-align:center;">
+            <h1 style="margin:0;color:#ffffff;font-size:26px;font-weight:800;">Liens Démarches</h1>
             <p style="margin:8px 0 0;color:rgba(255,255,255,.75);font-size:14px;">Bienvenue dans notre newsletter !</p>
           </td>
         </tr>
 
-        <!-- CORPS -->
         <tr>
-          <td style="padding:40px 40px 32px;">
+          <td style="padding:40px;">
             <h2 style="margin:0 0 16px;font-size:20px;font-weight:700;color:#1a1a2e;">Merci pour votre inscription !</h2>
             <p style="margin:0 0 14px;font-size:15px;color:#444;line-height:1.7;">
-              Vous &ecirc;tes maintenant abonn&eacute; &agrave; la newsletter <strong>Liens D&eacute;marches</strong>.
-              Vous recevrez en priorit&eacute; toutes les nouveaut&eacute;s : nouveaux liens, mises &agrave; jour des services et conseils pratiques pour simplifier vos d&eacute;marches administratives.
+              Vous êtes maintenant abonné à la newsletter <strong>Liens Démarches</strong>.
+              Vous recevrez toutes les nouveautés : nouveaux liens, mises à jour des services et conseils pratiques.
             </p>
             <p style="margin:0 0 28px;font-size:15px;color:#444;line-height:1.7;">
-              En attendant, n&rsquo;h&eacute;sitez pas &agrave; parcourir nos cat&eacute;gories et &agrave; sauvegarder vos liens favoris !
+              En attendant, parcourez nos catégories et sauvegardez vos liens favoris !
             </p>
             <div style="text-align:center;">
-              <a href="https://liensde.infinityfreeapp.com/index.php"
-                 style="display:inline-block;background:linear-gradient(135deg,#6a0dad,#9b30ff);color:#ffffff;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;letter-spacing:.02em;">
-                Acc&eacute;der au site &rarr;
+              <a href="https://liens-demarches.infinityfreeapp.com/index.php"
+                 style="display:inline-block;background:#6a0dad;color:#ffffff;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:700;text-decoration:none;">
+                Accéder au site &rarr;
               </a>
             </div>
           </td>
         </tr>
 
-        <!-- SÉPARATEUR -->
-        <tr><td style="padding:0 40px;"><hr style="border:none;border-top:1px solid #f0e6fa;"></td></tr>
-
-        <!-- FOOTER EMAIL -->
         <tr>
-          <td style="padding:24px 40px 32px;text-align:center;">
-            <p style="margin:0 0 6px;font-size:12px;color:#999;">
-              Vous recevez cet email car vous vous &ecirc;tes inscrit &agrave; la newsletter de Liens D&eacute;marches.
-            </p>
-            <p style="margin:0;font-size:12px;color:#bbb;">
-              &copy; ' . date('Y') . ' Liens D&eacute;marches &mdash; Tous droits r&eacute;serv&eacute;s
+          <td style="padding:24px 40px 32px;text-align:center;border-top:1px solid #f0e6fa;">
+            <p style="margin:0;font-size:12px;color:#999;">
+              &copy; ' . date('Y') . ' Liens Démarches &mdash; Tous droits réservés
             </p>
           </td>
         </tr>
@@ -80,13 +99,4 @@ $corps  = '<!DOCTYPE html>
   </table>
 </body>
 </html>';
-
-$ok = smtp_send_mail($email, $sujet, $corps);
-
-if ($ok) {
-    echo json_encode(['ok' => true, 'msg' => 'Merci ! Un email de bienvenue vient de vous être envoyé.']);
-} else {
-    // Log l'erreur mais ne bloque pas l'utilisateur
-    error_log('Newsletter SMTP error: ' . ($GLOBALS['smtp_last_error'] ?? 'unknown'));
-    echo json_encode(['ok' => true, 'msg' => 'Inscription enregistrée ! Merci pour votre intérêt.']);
 }
