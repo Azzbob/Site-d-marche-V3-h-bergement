@@ -256,13 +256,13 @@ include 'header.php';
                 <input type="hidden" name="lien_id" value="<?= $lien['id'] ?>">
                 <button type="submit" name="toggle_favori"
                         class="lien-card__fav <?= $estFavori ? 'lien-card__fav--active' : '' ?>">
-                  <span class="lien-card__fav-icon"><?= $estFavori ? '' : '' ?></span>
+                  <span class="lien-card__fav-icon"><?= $estFavori ? '★' : '☆' ?></span>
                   <?= $estFavori ? 'dans vos favoris' : 'ajouter au favoris' ?>
                 </button>
               </form>
             <?php else: ?>
               <a href="connexion.php" class="lien-card__fav" title="Connectez-vous pour ajouter aux favoris">
-                <span class="lien-card__fav-icon"></span>
+                <span class="lien-card__fav-icon">☆</span>
                 ajouter au favoris
               </a>
             <?php endif; ?>
