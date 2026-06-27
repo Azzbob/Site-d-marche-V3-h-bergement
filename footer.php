@@ -121,16 +121,14 @@ function subscribeNewsletter() {
       msg.textContent = data.msg;
     })
     .catch(function(err) {
-      // Si newsletter.php absent ou erreur serveur, on affiche quand même un succès visuel
-      // et on logue l'erreur en console
       console.warn('Newsletter:', err);
       msg.style.display = 'block';
-      msg.style.background = 'rgba(255,255,255,0.15)';
-      msg.style.color = '#ffffff';
-      msg.style.border = '1px solid rgba(255,255,255,0.3)';
-      msg.textContent = 'Merci pour votre inscription !';
-      document.getElementById('newsletterEmail').value = '';
-      btn.textContent = 'Abonné !';
+      msg.style.background = 'rgba(255,100,100,0.25)';
+      msg.style.color = '#ffdddd';
+      msg.style.border = '1px solid rgba(255,150,150,0.4)';
+      msg.textContent = 'Erreur réseau. Vérifiez que newsletter.php est bien uploadé sur le serveur.';
+      btn.disabled = false;
+      btn.textContent = "S'abonner";
     });
 }
 

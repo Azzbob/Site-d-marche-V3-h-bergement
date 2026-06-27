@@ -340,6 +340,59 @@ img { display: block; max-width: 100%; }
 }
   </style>
   <?= $extra_css ?? '' ?>
+
+<style>
+/* ══ Animation d'entrée globale (toutes pages) ══ */
+@keyframes globalFadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Sections et blocs principaux */
+.hero,
+.hero__text,
+.hero__visual,
+.section,
+.container,
+.legal-hero,
+.legal-content,
+.card,
+.faq-block,
+.contact-content,
+.identite-wrap,
+.identite-hero,
+.identite-card,
+.mon-compte-wrap,
+.favoris-wrap,
+main > *,
+.page-content > * {
+  animation: globalFadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Décalages en cascade pour les éléments successifs */
+.hero__text      { animation-delay: 0.05s; }
+.hero__visual    { animation-delay: 0.15s; }
+
+.section:nth-of-type(1) { animation-delay: 0.05s; }
+.section:nth-of-type(2) { animation-delay: 0.12s; }
+.section:nth-of-type(3) { animation-delay: 0.19s; }
+.section:nth-of-type(4) { animation-delay: 0.26s; }
+
+.identite-hero   { animation-delay: 0.05s; }
+.identite-card:nth-of-type(1) { animation-delay: 0.12s; }
+.identite-card:nth-of-type(2) { animation-delay: 0.20s; }
+.identite-card:nth-of-type(3) { animation-delay: 0.28s; }
+
+/* Respecter la préférence "pas d'animations" */
+@media (prefers-reduced-motion: reduce) {
+  .hero, .hero__text, .hero__visual, .section, .container,
+  .legal-hero, .legal-content, .card, .faq-block,
+  .contact-content, .identite-wrap, .identite-hero, .identite-card,
+  .mon-compte-wrap, .favoris-wrap, main > *, .page-content > * {
+    animation: none !important;
+  }
+}
+</style>
 </head>
 <body>
 
