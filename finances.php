@@ -34,6 +34,7 @@ if ($user_connecte && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tog
 }
 
 $page_title = 'Finances – Liens Démarches';
+$page_desc  = 'Finances – Accédez aux liens essentiels pour vos démarches fiscales, bancaires et financières en France.';
 $extra_css  = '<style>
 .page-header {
   text-align: center;

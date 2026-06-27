@@ -7,6 +7,7 @@ require_once 'db.php';
 require_once 'auto-login.php';
 
 $page_title = 'Mentions légales – Liens Démarches';
+$page_desc  = 'Mentions légales de Liens Démarches – Informations légales sur l éditeur et l hébergeur du site.';
 $extra_css  = '<style>' . file_get_contents(__DIR__ . '/legal-pages.css') . '</style>';
 
 include 'header.php';

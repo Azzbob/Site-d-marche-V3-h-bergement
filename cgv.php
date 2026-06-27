@@ -7,6 +7,7 @@ require_once 'db.php';
 require_once 'auto-login.php';
 
 $page_title = 'Conditions générales de vente – Liens Démarches';
+$page_desc  = 'Conditions générales de vente de Liens Démarches – Modalités d accès et d utilisation du service.';
 $extra_css  = '<style>' . file_get_contents(__DIR__ . '/legal-pages.css') . '</style>';
 
 include 'header.php';

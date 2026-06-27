@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 $user['nom']    = $nom;
                 $user['prenom'] = $prenom;
                 $user['email']  = $email;
-                $msg_succes = '✅ Vos informations ont bien été mises à jour.';
+                $msg_succes = ' Vos informations ont bien été mises à jour.';
             }
         }
         $active_tab = 'profil';
@@ -107,13 +107,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             // Révocation des tokens remember-me par sécurité
             $stmtRevoke = $pdo->prepare('DELETE FROM remember_tokens WHERE user_id = ?');
             $stmtRevoke->execute([$user['id']]);
-            $msg_succes = '✅ Mot de passe modifié avec succès.';
+            $msg_succes = ' Mot de passe modifié avec succès.';
         }
         $active_tab = 'securite';
     }
 }
 
 $page_title = 'Mon Compte – Liens Démarches';
+$page_desc  = 'Mon compte Liens Démarches – Gérez votre profil, vos favoris et vos préférences.';
 include 'header.php';
 ?>
 
@@ -408,7 +409,7 @@ include 'header.php';
 <!-- HERO -->
 <div class="account-hero">
   <div class="account-hero__inner">
-    <h2>Bienvenue, <?= htmlspecialchars($user['prenom']) ?> 👋</h2>
+    <h2>Bienvenue, <?= htmlspecialchars($user['prenom']) ?></h2>
     <p>Gérez votre profil et accédez à tous vos liens personnalisés</p>
   </div>
 </div>
@@ -423,12 +424,12 @@ include 'header.php';
       <div class="user-card__name"><?= htmlspecialchars($user['prenom'] . ' ' . $user['nom']) ?></div>
       <div class="user-card__email"><?= htmlspecialchars($user['email']) ?></div>
       <div class="user-card__badges">
-        <span class="badge badge--green">✓ Compte vérifié</span>
+        <span class="badge badge--green"> Compte vérifié</span>
         <span class="badge badge--violet">Membre depuis <?= date('Y', strtotime($user['created_at'])) ?></span>
       </div>
     </div>
     <div class="user-card__actions">
-      <a href="favoris.php" class="btn-outline-violet">⭐ Mes favoris</a>
+      <a href="favoris.php" class="btn-outline-violet"> Mes favoris</a>
       <a href="?logout=1" class="btn-danger-outline"
          onclick="return confirm('Êtes-vous sûr de vouloir vous déconnecter ?')">Déconnexion</a>
     </div>
@@ -438,22 +439,22 @@ include 'header.php';
 <!-- STATS -->
 <div class="stats-row">
   <div class="stat-card">
-    <div class="stat-card__icon">⭐</div>
+    
     <div class="stat-card__value"><?= $nb_favoris ?></div>
     <div class="stat-card__label">Liens favoris</div>
   </div>
   <div class="stat-card">
-    <div class="stat-card__icon">🔗</div>
+    
     <div class="stat-card__value">6</div>
     <div class="stat-card__label">Catégories</div>
   </div>
   <div class="stat-card">
-    <div class="stat-card__icon">📅</div>
+    
     <div class="stat-card__value"><?= date('d/m', strtotime($user['created_at'])) ?></div>
     <div class="stat-card__label">Inscrit le <?= date('d/m/Y', strtotime($user['created_at'])) ?></div>
   </div>
   <div class="stat-card">
-    <div class="stat-card__icon">✅</div>
+    
     <div class="stat-card__value" style="font-size:18px;">Actif</div>
     <div class="stat-card__label">Statut du compte</div>
   </div>
@@ -471,10 +472,10 @@ include 'header.php';
 
   <!-- Onglets -->
   <div class="account-tabs">
-    <a href="?tab=profil"    class="account-tab <?= $active_tab === 'profil'    ? 'active' : '' ?>">👤 Mon profil</a>
-    <a href="?tab=securite"  class="account-tab <?= $active_tab === 'securite'  ? 'active' : '' ?>">🔒 Sécurité</a>
-    <a href="?tab=activite"  class="account-tab <?= $active_tab === 'activite'  ? 'active' : '' ?>">📊 Activité</a>
-    <a href="?tab=raccourcis" class="account-tab <?= $active_tab === 'raccourcis' ? 'active' : '' ?>">⚡ Accès rapide</a>
+    <a href="?tab=profil"    class="account-tab <?= $active_tab === 'profil'    ? 'active' : '' ?>">Mon profil</a>
+    <a href="?tab=securite"  class="account-tab <?= $active_tab === 'securite'  ? 'active' : '' ?>">Sécurité</a>
+    <a href="?tab=activite"  class="account-tab <?= $active_tab === 'activite'  ? 'active' : '' ?>">Activité</a>
+    <a href="?tab=raccourcis" class="account-tab <?= $active_tab === 'raccourcis' ? 'active' : '' ?>">Accès rapide</a>
   </div>
 
   <!-- ── Onglet Profil ── -->
@@ -531,14 +532,14 @@ include 'header.php';
             <label for="mdp_actuel">Mot de passe actuel</label>
             <div class="input-pw-wrap">
               <input type="password" id="mdp_actuel" name="mdp_actuel" placeholder="••••••••" autocomplete="current-password" required>
-              <button type="button" class="input-pw-toggle" data-target="mdp_actuel" aria-label="Afficher">👁</button>
+              <button type="button" class="input-pw-toggle" data-target="mdp_actuel" aria-label="Afficher">Voir</button>
             </div>
           </div>
           <div class="form-group">
             <label for="new_mdp">Nouveau mot de passe</label>
             <div class="input-pw-wrap">
               <input type="password" id="new_mdp" name="new_mdp" placeholder="8 caractères minimum" minlength="8" autocomplete="new-password" required>
-              <button type="button" class="input-pw-toggle" data-target="new_mdp" aria-label="Afficher">👁</button>
+              <button type="button" class="input-pw-toggle" data-target="new_mdp" aria-label="Afficher">Voir</button>
             </div>
             <span class="form-hint" id="pwStrength"></span>
           </div>
@@ -546,16 +547,16 @@ include 'header.php';
             <label for="confirm_mdp">Confirmer le nouveau mot de passe</label>
             <div class="input-pw-wrap">
               <input type="password" id="confirm_mdp" name="confirm_mdp" placeholder="Répétez le mot de passe" minlength="8" autocomplete="new-password" required>
-              <button type="button" class="input-pw-toggle" data-target="confirm_mdp" aria-label="Afficher">👁</button>
+              <button type="button" class="input-pw-toggle" data-target="confirm_mdp" aria-label="Afficher">Voir</button>
             </div>
           </div>
         </div>
-        <button type="submit" class="btn-save">🔒 Mettre à jour le mot de passe</button>
+        <button type="submit" class="btn-save">Mettre à jour le mot de passe</button>
       </form>
     </div>
 
     <div class="danger-zone">
-      <h4>⚠️ Zone de danger</h4>
+      <h4> Zone de danger</h4>
       <p>La suppression de votre compte est définitive. Toutes vos données (favoris, préférences) seront effacées et ne pourront pas être récupérées.</p>
       <button class="btn-danger"
               onclick="if(confirm('Êtes-vous sûr de vouloir supprimer définitivement votre compte ?')) alert('Fonctionnalité à venir – contactez le support.')">
@@ -578,7 +579,7 @@ include 'header.php';
         </div>
         <div class="member-info-item">
           <div class="member-info-item__label">Statut</div>
-          <div class="member-info-item__value" style="color:#1a7a3f">✓ Actif</div>
+          <div class="member-info-item__value" style="color:#1a7a3f"> Actif</div>
         </div>
         <div class="member-info-item">
           <div class="member-info-item__label">Liens en favoris</div>
@@ -609,35 +610,27 @@ include 'header.php';
       <p class="card-desc">Retrouvez directement les catégories les plus utilisées.</p>
       <div class="quick-links">
         <a href="identite.php" class="quick-link">
-          <div class="quick-link__icon">🪪</div>
           <div class="quick-link__text"><strong>Identité</strong><span>CNI, passeport, état civil</span></div>
         </a>
         <a href="social-sante.php" class="quick-link">
-          <div class="quick-link__icon">🏥</div>
           <div class="quick-link__text"><strong>Social &amp; Santé</strong><span>CAF, Ameli, handicap</span></div>
         </a>
         <a href="travail-retraite.php" class="quick-link">
-          <div class="quick-link__icon">💼</div>
           <div class="quick-link__text"><strong>Travail &amp; Retraite</strong><span>France Travail, retraite</span></div>
         </a>
         <a href="logement.php" class="quick-link">
-          <div class="quick-link__icon">🏠</div>
           <div class="quick-link__text"><strong>Logement</strong><span>APL, déménagement</span></div>
         </a>
         <a href="finances.php" class="quick-link">
-          <div class="quick-link__icon">💰</div>
           <div class="quick-link__text"><strong>Finances</strong><span>Impôts, banque, aides</span></div>
         </a>
         <a href="droits-services.php" class="quick-link">
-          <div class="quick-link__icon">⚖️</div>
           <div class="quick-link__text"><strong>Droits &amp; Services</strong><span>Justice, administration</span></div>
         </a>
         <a href="favoris.php" class="quick-link">
-          <div class="quick-link__icon">⭐</div>
           <div class="quick-link__text"><strong>Mes favoris</strong><span><?= $nb_favoris ?> lien<?= $nb_favoris > 1 ? 's' : '' ?> enregistré<?= $nb_favoris > 1 ? 's' : '' ?></span></div>
         </a>
         <a href="configuration-cookies.php" class="quick-link">
-          <div class="quick-link__icon">🍪</div>
           <div class="quick-link__text"><strong>Cookies</strong><span>Gérer mes préférences</span></div>
         </a>
       </div>
@@ -655,7 +648,7 @@ include 'header.php';
       const input = document.getElementById(btn.dataset.target);
       if (!input) return;
       input.type = input.type === 'password' ? 'text' : 'password';
-      btn.textContent = input.type === 'password' ? '👁' : '🙈';
+      btn.textContent = input.type === 'password' ? '\u{1F441}' : '\u{1F648}';
     });
   });
 
@@ -672,7 +665,7 @@ include 'header.php';
       if (/[0-9]/.test(v)) score++;
       if (/[^a-zA-Z0-9]/.test(v)) score++;
 
-      const levels = ['', 'Très faible 🔴', 'Faible 🟠', 'Moyen 🟡', 'Fort 🟢', 'Très fort 💪'];
+      const levels = ['', 'Très faible', 'Faible', 'Moyen', 'Fort', 'Très fort'];
       const colors = ['', '#c00', '#e07b00', '#b89000', '#1a7a3f', '#6a0dad'];
       pwStrength.textContent  = v ? (levels[score] || levels[1]) : '';
       pwStrength.style.color  = v ? colors[score] : '';

@@ -34,6 +34,7 @@ if ($user_connecte && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tog
 }
 
 $page_title = 'Droits & Services – Liens Démarches';
+$page_desc  = 'Droits et Services – Liens vers les démarches juridiques, administratives et les services publics.';
 $extra_css  = '<style>
 .page-header {
   text-align: center;

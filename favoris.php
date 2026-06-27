@@ -35,6 +35,7 @@ $stmt->execute([$_SESSION['user_id']]);
 $favoris = $stmt->fetchAll();
 
 $page_title = 'Mes Favoris – Liens Démarches';
+$page_desc  = 'Mes favoris – Retrouvez et gérez tous vos liens de démarches administratives sauvegardés.';
 $extra_css = '<style>
 
 /* ══ HERO FAVORIS ══ */

@@ -7,6 +7,7 @@ require_once 'db.php';
 require_once 'auto-login.php';
 
 $page_title = 'Politique relative aux cookies – Liens Démarches';
+$page_desc  = 'Politique relative aux cookies de Liens Démarches – Utilisation et gestion des cookies.';
 $extra_css  = '<style>' . file_get_contents(__DIR__ . '/legal-pages.css') . '</style>';
 
 include 'header.php';

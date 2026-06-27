@@ -42,6 +42,7 @@ if ($user_connecte && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tog
 }
 
 $page_title = 'Travail & Retraite – Liens Démarches';
+$page_desc  = 'Travail et Retraite – Accédez à France Travail, l Urssaf, la retraite et vos droits au travail.';
 $extra_css  = '<style>
 .page-header {
   text-align: center;

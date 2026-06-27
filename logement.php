@@ -34,6 +34,7 @@ if ($user_connecte && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tog
 }
 
 $page_title = 'Logement – Liens Démarches';
+$page_desc  = 'Logement – Liens utiles pour vos démarches liées au logement : CAF, APL, bail, propriété.';
 $extra_css  = '<style>
 .page-header {
   text-align: center;

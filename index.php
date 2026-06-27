@@ -55,6 +55,7 @@ foreach ($tous_liens as $lien) {
 }
 
 $page_title = 'Liens Démarches – Toutes vos démarches administratives en un seul endroit';
+$page_desc  = 'Liens Démarches – Accédez facilement à toutes vos démarches administratives en France : CAF, Urssaf, Assurance Maladie, France Travail, impôts et bien plus.';
 $extra_css  = '<link rel="stylesheet" href="index.css">';
 $extra_js   = '<script src="index.js"></script>';
 

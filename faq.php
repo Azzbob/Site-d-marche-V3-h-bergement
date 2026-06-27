@@ -7,6 +7,7 @@ require_once 'db.php';
 require_once 'auto-login.php';
 
 $page_title = 'FAQ – Liens Démarches';
+$page_desc  = 'FAQ Liens Démarches – Réponses aux questions fréquentes sur l utilisation du site et des démarches administratives.';
 $extra_css  = '<link rel="stylesheet" href="legal-pages.css">';
 
 include 'header.php';

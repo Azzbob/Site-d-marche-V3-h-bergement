@@ -19,6 +19,26 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 
+$email = strtolower($email);
+
+// ── Vérification doublon via fichier JSON ──
+$storageFile = __DIR__ . '/newsletter_subscribers.json';
+$subscribers = [];
+
+if (file_exists($storageFile)) {
+    $raw = file_get_contents($storageFile);
+    $subscribers = json_decode($raw, true) ?: [];
+}
+
+if (in_array($email, $subscribers, true)) {
+    echo json_encode(['ok' => false, 'msg' => 'Cette adresse est déjà inscrite à notre newsletter.']);
+    exit;
+}
+
+// Ajouter l'email et sauvegarder
+$subscribers[] = $email;
+file_put_contents($storageFile, json_encode($subscribers, JSON_PRETTY_PRINT), LOCK_EX);
+
 // Test si fsockopen est disponible (souvent bloqué sur InfinityFree)
 $socketTest = @fsockopen('smtp.gmail.com', 587, $errno, $errstr, 5);
 if (!$socketTest) {

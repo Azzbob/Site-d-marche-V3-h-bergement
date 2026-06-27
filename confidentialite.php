@@ -7,6 +7,7 @@ require_once 'db.php';
 require_once 'auto-login.php';
 
 $page_title = 'Politique de Confidentialité – Liens Démarches';
+$page_desc  = 'Politique de confidentialité de Liens Démarches – Comment nous protégeons vos données personnelles.';
 $extra_css  = '<style>' . file_get_contents(__DIR__ . '/legal-pages.css') . '</style>';
 
 include 'header.php';

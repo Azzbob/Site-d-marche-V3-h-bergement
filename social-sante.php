@@ -42,6 +42,7 @@ if ($user_connecte && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['tog
 }
 
 $page_title = 'Social & Santé – Liens Démarches';
+$page_desc  = 'Social et Santé – Liens directs vers l Assurance Maladie, la CAF, la CPAM et les services sociaux.';
 $extra_css  = '<style>
 .page-header {
   text-align: center;

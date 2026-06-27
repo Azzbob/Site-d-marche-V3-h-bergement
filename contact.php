@@ -8,6 +8,7 @@ require_once 'auto-login.php';
 require_once 'csrf.php';
 
 $page_title = 'Contact – Liens Démarches';
+$page_desc  = 'Contactez l équipe Liens Démarches pour toute question ou suggestion concernant le site.';
 $extra_css  = '<link rel="stylesheet" href="legal-pages.css">';
 
 // Pré-remplissage si connecté
@@ -369,7 +370,7 @@ include 'header.php';
         <div class="contact-info-icon">✉️</div>
         <div class="contact-info-text">
           <strong>Email</strong>
-          <span><a href="mailto:contact@liens-demarches.fr">contact@liens-demarches.fr</a></span>
+          <span><a href="mailto:azebob95@gmail.com">azebob95@gmail.com</a></span>
         </div>
       </div>
 
