@@ -107,10 +107,23 @@ if ($user_connecte) {
       Déconnexion
     </a>
   <?php else: ?>
-    <a href="connexion.php" class="btn btn--outline btn--sm" style="width:100%;text-align:center;margin-bottom:10px">
+    <a href="connexion.php"
+       style="display:block; width:100%; padding:12px 18px;
+              background:transparent; color:#ffffff;
+              border:2px solid rgba(255,255,255,0.5);
+              border-radius:8px; font-size:14px; font-weight:600;
+              text-align:center; text-decoration:none;
+              margin-bottom:10px;
+              transition:background .2s, border-color .2s;">
       Connexion
     </a>
-    <a href="inscription.php" class="btn btn--primary btn--sm" style="width:100%;text-align:center">
+    <a href="inscription.php"
+       style="display:block; width:100%; padding:12px 18px;
+              background:transparent; color:#ffffff;
+              border:2px solid rgba(255,255,255,0.5);
+              border-radius:8px; font-size:14px; font-weight:600;
+              text-align:center; text-decoration:none;
+              transition:background .2s, border-color .2s;">
       Créer un compte
     </a>
   <?php endif; ?>
