@@ -30,13 +30,108 @@
     setCookie(COOKIE_NAME, JSON.stringify(prefs), COOKIE_DAYS);
   }
 
-  // ── Bannière globale (injectée sur toutes les pages) ──
+  // ── Injection du CSS de la bannière (auto-injecté pour garantir
+  //    l'affichage correct même si legal-pages.css n'est pas chargé) ──
+  function injectBannerCSS() {
+    if (document.getElementById('cookie-banner-style')) return;
+    const style = document.createElement('style');
+    style.id = 'cookie-banner-style';
+    style.textContent = `
+      .cookie-banner {
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        top: auto !important;
+        z-index: 9999 !important;
+        background: #1a1a2e !important;
+        color: #ffffff !important;
+        padding: 20px 24px !important;
+        box-shadow: 0 -6px 30px rgba(0,0,0,.30) !important;
+        transform: translateY(110%);
+        transition: transform .4s cubic-bezier(.4,0,.2,1);
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        margin: 0 !important;
+      }
+      .cookie-banner.visible {
+        transform: translateY(0) !important;
+      }
+      .cookie-banner__inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        flex-wrap: wrap;
+      }
+      .cookie-banner__text {
+        flex: 1;
+        min-width: 240px;
+        font-size: 13px;
+        line-height: 1.6;
+        color: rgba(255,255,255,.85);
+      }
+      .cookie-banner__text a {
+        color: #c9a4ff;
+        text-decoration: underline;
+      }
+      .cookie-banner__actions {
+        display: flex;
+        gap: 10px;
+        flex-shrink: 0;
+        flex-wrap: wrap;
+      }
+      .cookie-banner__btn {
+        font-size: 13px;
+        font-weight: 600;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: background .2s ease, border-color .2s ease, transform .15s ease;
+        white-space: nowrap;
+        line-height: 1;
+      }
+      .cookie-banner__btn:active { transform: scale(.96); }
+      .cookie-banner__btn--ghost {
+        background: transparent;
+        color: #ffffff;
+        border-color: rgba(255,255,255,.45);
+      }
+      .cookie-banner__btn--ghost:hover {
+        background: rgba(255,255,255,.10);
+        border-color: rgba(255,255,255,.70);
+      }
+      .cookie-banner__btn--accept {
+        background: #6a0dad;
+        color: #ffffff;
+        border-color: #6a0dad;
+      }
+      .cookie-banner__btn--accept:hover {
+        background: #5a0b99;
+        border-color: #5a0b99;
+      }
+
+      @media (max-width: 640px) {
+        .cookie-banner__inner { flex-direction: column; align-items: stretch; }
+        .cookie-banner__actions { flex-direction: column; }
+        .cookie-banner__btn { width: 100%; text-align: center; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  // ── Bannière globale (injectée directement dans <body>, jamais dans le footer) ──
   function initBanner() {
     if (getPrefs()) return; // déjà répondu
+
+    injectBannerCSS();
 
     const banner = document.createElement('div');
     banner.className = 'cookie-banner';
     banner.id = 'cookieBanner';
+    banner.setAttribute('role', 'dialog');
+    banner.setAttribute('aria-label', 'Consentement aux cookies');
     banner.innerHTML = `
       <div class="cookie-banner__inner">
         <p class="cookie-banner__text">
@@ -50,9 +145,14 @@
         </div>
       </div>
     `;
+
+    // Inséré directement dans <body> (position: fixed garantit l'affichage en bas de l'écran)
     document.body.appendChild(banner);
 
-    requestAnimationFrame(() => banner.classList.add('visible'));
+    // Double requestAnimationFrame pour déclencher la transition CSS
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => banner.classList.add('visible'));
+    });
 
     document.getElementById('cookieBannerAccept').addEventListener('click', () => {
       savePrefs({ personnalisation: true, mesure: true, sociaux: true });
@@ -73,14 +173,14 @@
 
   // ── Page de configuration détaillée ──
   function initConfigPage() {
-    const togglePerso  = document.getElementById('cookiePersonnalisation');
-    const toggleMesure = document.getElementById('cookieMesure');
+    const togglePerso   = document.getElementById('cookiePersonnalisation');
+    const toggleMesure  = document.getElementById('cookieMesure');
     const toggleSociaux = document.getElementById('cookieSociaux');
     if (!togglePerso) return; // pas sur cette page
 
     const prefs = getPrefs() || { personnalisation: false, mesure: false, sociaux: false };
-    togglePerso.checked = !!prefs.personnalisation;
-    toggleMesure.checked = !!prefs.mesure;
+    togglePerso.checked   = !!prefs.personnalisation;
+    toggleMesure.checked  = !!prefs.mesure;
     toggleSociaux.checked = !!prefs.sociaux;
 
     const confirmBox = document.getElementById('cookieConfirm');
@@ -99,16 +199,16 @@
     });
 
     document.getElementById('btnAccepterTout').addEventListener('click', () => {
-      togglePerso.checked = true;
-      toggleMesure.checked = true;
+      togglePerso.checked   = true;
+      toggleMesure.checked  = true;
       toggleSociaux.checked = true;
       savePrefs({ personnalisation: true, mesure: true, sociaux: true });
       showConfirm();
     });
 
     document.getElementById('btnRefuserTout').addEventListener('click', () => {
-      togglePerso.checked = false;
-      toggleMesure.checked = false;
+      togglePerso.checked   = false;
+      toggleMesure.checked  = false;
       toggleSociaux.checked = false;
       savePrefs({ personnalisation: false, mesure: false, sociaux: false });
       showConfirm();
@@ -116,8 +216,8 @@
 
     document.getElementById('btnAnnuler').addEventListener('click', () => {
       const current = getPrefs() || { personnalisation: false, mesure: false, sociaux: false };
-      togglePerso.checked = !!current.personnalisation;
-      toggleMesure.checked = !!current.mesure;
+      togglePerso.checked   = !!current.personnalisation;
+      toggleMesure.checked  = !!current.mesure;
       toggleSociaux.checked = !!current.sociaux;
     });
   }
