@@ -36,213 +36,391 @@ $favoris = $stmt->fetchAll();
 
 $page_title = 'Mes Favoris – Liens Démarches';
 $extra_css = '<style>
-.page-header {
+
+/* ══ HERO FAVORIS ══ */
+.fav-hero {
+  position: relative;
   text-align: center;
-  padding: 50px 40px 60px;
-  background: linear-gradient(135deg, #3b006e 0%, #6a0dad 60%, #9b30ff 100%);
-  color: #ffffff;
+  padding: 56px 40px 70px;
+  background: linear-gradient(135deg, #2a004f 0%, #6a0dad 55%, #9b30ff 100%);
+  color: #fff;
+  overflow: hidden;
 }
-.page-header__title {
-  font-size: 32px;
+.fav-hero::before {
+  content: "";
+  position: absolute;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.04);
+  right: -180px; top: -200px;
+  pointer-events: none;
+}
+.fav-hero::after {
+  content: "";
+  position: absolute;
+  width: 300px; height: 300px;
+  border-radius: 50%;
+  background: rgba(255,255,255,.03);
+  left: -80px; bottom: -120px;
+  pointer-events: none;
+}
+.fav-hero__icon {
+  width: 72px; height: 72px;
+  margin: 0 auto 18px;
+  background: rgba(255,255,255,.12);
+  border: 2px solid rgba(255,255,255,.25);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.fav-hero__icon svg { width: 36px; height: 36px; fill: #f5c842; }
+.fav-hero__title {
+  font-size: 34px;
   font-weight: 800;
-  color: #ffffff;
-  letter-spacing: .08em;
+  letter-spacing: .06em;
   text-transform: uppercase;
+  margin-bottom: 10px;
 }
-.page-header__sub {
-  font-size: 14px;
-  color: rgba(255,255,255,.8);
-  margin-top: 8px;
-}
-
-.cat-content {
-  max-width: 780px;
+.fav-hero__sub {
+  font-size: 15px;
+  color: rgba(255,255,255,.78);
+  max-width: 440px;
   margin: 0 auto;
-  padding: 36px 24px 80px;
+  line-height: 1.6;
 }
-
-.cat-count {
+.fav-hero__badge {
+  display: inline-block;
+  margin-top: 18px;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3);
+  color: #fff;
   font-size: 13px;
   font-weight: 700;
-  color: #1a1a2e;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  margin-bottom: 24px;
+  padding: 5px 16px;
+  border-radius: 20px;
+  letter-spacing: .04em;
 }
 
-.lien-card {
-  background: #ffffff;
-  border: 1px solid #e0e0e8;
-  border-radius: 12px;
-  padding: 20px 24px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 10px rgba(0,0,0,.05);
-  transition: box-shadow .22s ease;
-}
-.lien-card:hover { box-shadow: 0 6px 24px rgba(106,13,173,.12); }
-
-.lien-card__title {
-  font-size: 14px;
-  font-weight: 600;
-  color: #1a1a2e;
-  text-align: center;
-  margin-bottom: 14px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #f0e6fa;
+/* ══ CONTENU ══ */
+.fav-content {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 44px 24px 90px;
 }
 
-.lien-card__body {
+/* ══ BARRE DE RECHERCHE / TRI ══ */
+.fav-toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  gap: 12px;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
 }
-
-.lien-card__left {
+.fav-search {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
   flex: 1;
-  min-width: 0;
+  min-width: 180px;
+  background: #fff;
+  border: 1.5px solid #e0e0e8;
+  border-radius: 8px;
+  padding: 8px 14px;
+  transition: border-color .2s;
+}
+.fav-search:focus-within { border-color: #6a0dad; }
+.fav-search svg { width: 16px; height: 16px; color: #aaa; flex-shrink: 0; }
+.fav-search__input {
+  border: none; outline: none;
+  background: transparent;
+  font-size: 14px; color: #1a1a2e;
+  width: 100%;
+}
+.fav-search__input::placeholder { color: #bbb; }
+.fav-count {
+  font-size: 12px; font-weight: 700;
+  color: #6a0dad;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  white-space: nowrap;
 }
 
-.lien-card__logo {
-  width: 60px;
-  height: 42px;
+/* ══ GRILLE DE CARTES ══ */
+.fav-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+/* ══ CARTE ══ */
+.fav-card {
+  background: #fff;
+  border: 1.5px solid #e8e8f0;
+  border-radius: 14px;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(106,13,173,.05);
+  transition: box-shadow .22s ease, border-color .22s ease, transform .22s ease;
+  display: flex;
+  flex-direction: column;
+}
+.fav-card:hover {
+  box-shadow: 0 8px 30px rgba(106,13,173,.13);
+  border-color: #c4a0e8;
+  transform: translateY(-2px);
+}
+
+.fav-card__top {
+  background: linear-gradient(90deg, #f5eeff 0%, #faf6ff 100%);
+  border-bottom: 1px solid #ede6f8;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.fav-card__logo {
+  width: 52px; height: 36px;
   object-fit: contain;
   flex-shrink: 0;
+  border-radius: 4px;
 }
-
-.lien-card__logo-placeholder {
-  width: 60px;
-  height: 42px;
-  background: #f0e6fa;
+.fav-card__logo-placeholder {
+  width: 52px; height: 36px;
+  background: #ede6f8;
   border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  color: #6a0dad;
-  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: #6a0dad; font-weight: 700;
   flex-shrink: 0;
 }
-
-.lien-card__info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
-
-.lien-card__cat {
-  font-size: 11px;
+.fav-card__title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a2e;
+  flex: 1;
+  line-height: 1.3;
+}
+.fav-card__cat-badge {
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
   color: #6a0dad;
+  background: #f0e6fa;
+  border-radius: 20px;
+  padding: 3px 10px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.lien-card__url {
+.fav-card__bottom {
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.fav-card__url {
   font-size: 13px;
   color: #6a0dad;
   text-decoration: underline;
+  text-underline-offset: 2px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 340px;
+  max-width: 400px;
+  transition: color .2s;
 }
-.lien-card__url:hover { color: #5a0b99; }
+.fav-card__url:hover { color: #4a0890; }
 
-.lien-card__fav {
-  display: flex;
+.fav-card__remove {
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
+  color: #cc3333;
+  background: #fff0f0;
+  border: 1.5px solid #f5c0c0;
+  border-radius: 6px;
+  padding: 6px 14px;
   cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s;
   white-space: nowrap;
   flex-shrink: 0;
-  background: none;
-  border: none;
-  padding: 0;
-  color: #f59e0b;
-  transition: color .2s;
 }
-.lien-card__fav:hover { color: #cc0000; }
-.lien-card__fav-icon { font-size: 18px; }
+.fav-card__remove:hover {
+  background: #ffe0e0;
+  border-color: #e88888;
+  color: #aa0000;
+}
+.fav-card__remove svg { width: 13px; height: 13px; }
 
-.empty-state {
+/* ══ ÉTAT VIDE ══ */
+.fav-empty {
   text-align: center;
-  padding: 80px 20px;
+  padding: 90px 24px;
+  background: #fff;
+  border: 1.5px dashed #d0c0e8;
+  border-radius: 20px;
 }
-.empty-state__icon { font-size: 56px; margin-bottom: 16px; }
-.empty-state__title { font-size: 20px; font-weight: 700; color: #1a1a2e; margin-bottom: 10px; }
-.empty-state__text { font-size: 14px; color: #666677; margin-bottom: 28px; }
-.empty-state__btn {
-  display: inline-block;
-  background: #6a0dad;
-  color: #ffffff;
-  padding: 12px 28px;
-  border-radius: 8px;
+.fav-empty__star {
+  width: 80px; height: 80px;
+  margin: 0 auto 24px;
+  background: linear-gradient(135deg, #f0e6fa, #e8d5f5);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+}
+.fav-empty__star svg { width: 38px; height: 38px; fill: #c4a0e8; }
+.fav-empty__title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin-bottom: 10px;
+}
+.fav-empty__text {
   font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background .2s;
+  color: #777;
+  margin-bottom: 28px;
+  line-height: 1.7;
+  max-width: 380px;
+  margin-left: auto;
+  margin-right: auto;
 }
-.empty-state__btn:hover { background: #5a0b99; }
+.fav-empty__btn {
+  display: inline-block;
+  background: linear-gradient(135deg, #6a0dad, #9b30ff);
+  color: #fff;
+  padding: 13px 30px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity .2s;
+  letter-spacing: .02em;
+}
+.fav-empty__btn:hover { opacity: .88; }
+
+/* ══ AUCUN RÉSULTAT FILTRE ══ */
+.fav-no-result {
+  text-align: center;
+  padding: 48px 20px;
+  color: #999;
+  font-size: 14px;
+  display: none;
+}
+.fav-no-result.show { display: block; }
+
+@media (max-width: 640px) {
+  .fav-card__bottom { flex-direction: column; align-items: flex-start; }
+  .fav-card__url { max-width: 100%; }
+}
 </style>';
 
 include 'header.php';
 ?>
 
-<div class="page-header">
-  <h1 class="page-header__title">Mes Favoris</h1>
-  <p class="page-header__sub">Bonjour <?= htmlspecialchars($_SESSION['user_prenom'] ?? '') ?>, retrouvez ici tous vos liens sauvegardés</p>
+<!-- HERO -->
+<div class="fav-hero">
+  <div class="fav-hero__icon">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+    </svg>
+  </div>
+  <h1 class="fav-hero__title">Mes Favoris</h1>
+  <p class="fav-hero__sub">Bonjour <?= htmlspecialchars($_SESSION['user_prenom'] ?? '') ?>, retrouvez ici tous vos liens sauvegardés</p>
+  <?php if (!empty($favoris)): ?>
+    <span class="fav-hero__badge"><?= count($favoris) ?> lien<?= count($favoris) > 1 ? 's' : '' ?> sauvegardé<?= count($favoris) > 1 ? 's' : '' ?></span>
+  <?php endif; ?>
 </div>
 
-<div class="cat-content">
+<!-- CONTENU -->
+<div class="fav-content">
 
   <?php if (empty($favoris)): ?>
-    <div class="empty-state">
-      <div class="empty-state__icon">☆</div>
-      <div class="empty-state__title">Aucun favori pour le moment</div>
-      <p class="empty-state__text">Parcourez nos catégories et ajoutez des liens à vos favoris en cliquant sur l'étoile.</p>
-      <a href="index.php" class="empty-state__btn">Découvrir les liens →</a>
+    <div class="fav-empty">
+      <div class="fav-empty__star">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+      </div>
+      <div class="fav-empty__title">Aucun favori pour le moment</div>
+      <p class="fav-empty__text">Parcourez nos catégories et ajoutez des liens à vos favoris en cliquant sur l'étoile. Ils apparaîtront ici pour un accès rapide.</p>
+      <a href="index.php" class="fav-empty__btn">Découvrir les liens &rarr;</a>
     </div>
 
   <?php else: ?>
-    <p class="cat-count"><?= count($favoris) ?> FAVORI<?= count($favoris) > 1 ? 'S' : '' ?> :</p>
 
-    <?php foreach ($favoris as $lien): ?>
-      <div class="lien-card">
-        <div class="lien-card__title"><?= htmlspecialchars($lien['titre']) ?></div>
-        <div class="lien-card__body">
+    <div class="fav-toolbar">
+      <div class="fav-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        <input type="text" class="fav-search__input" id="favSearch" placeholder="Rechercher dans mes favoris…" autocomplete="off">
+      </div>
+      <span class="fav-count" id="favCount"><?= count($favoris) ?> FAVORI<?= count($favoris) > 1 ? 'S' : '' ?></span>
+    </div>
 
-          <div class="lien-card__left">
+    <div class="fav-no-result" id="favNoResult">Aucun favori ne correspond à votre recherche.</div>
+
+    <div class="fav-grid" id="favGrid">
+      <?php foreach ($favoris as $lien): ?>
+        <div class="fav-card" data-title="<?= htmlspecialchars(strtolower($lien['titre'])) ?>" data-cat="<?= htmlspecialchars(strtolower($lien['cat_nom'] ?? '')) ?>" data-desc="<?= htmlspecialchars(strtolower($lien['description'] ?? '')) ?>">
+
+          <div class="fav-card__top">
             <?php if ($lien['logo']): ?>
               <img src="<?= htmlspecialchars($lien['logo']) ?>"
                    alt="<?= htmlspecialchars($lien['titre']) ?>"
-                   class="lien-card__logo">
+                   class="fav-card__logo">
             <?php else: ?>
-              <div class="lien-card__logo-placeholder">LOGO</div>
+              <div class="fav-card__logo-placeholder">LOGO</div>
             <?php endif; ?>
-
-            <div class="lien-card__info">
-              <span class="lien-card__cat"><?= htmlspecialchars($lien['cat_nom'] ?? '') ?></span>
-              <a href="<?= htmlspecialchars($lien['url']) ?>"
-                 target="_blank" rel="noopener noreferrer"
-                 class="lien-card__url">
-                <?= htmlspecialchars($lien['description'] ?: $lien['url']) ?>
-              </a>
-            </div>
+            <span class="fav-card__title"><?= htmlspecialchars($lien['titre']) ?></span>
+            <?php if ($lien['cat_nom']): ?>
+              <span class="fav-card__cat-badge"><?= htmlspecialchars($lien['cat_nom']) ?></span>
+            <?php endif; ?>
           </div>
 
-          <form method="POST" style="margin:0">
-            <input type="hidden" name="lien_id" value="<?= $lien['id'] ?>">
-            <button type="submit" name="retirer_favori" class="lien-card__fav" title="Retirer des favoris">
-              <span class="lien-card__fav-icon">★</span>
-              retirer des favoris
-            </button>
-          </form>
+          <div class="fav-card__bottom">
+            <a href="<?= htmlspecialchars($lien['url']) ?>"
+               target="_blank" rel="noopener noreferrer"
+               class="fav-card__url">
+              <?= htmlspecialchars($lien['description'] ?: $lien['url']) ?>
+            </a>
 
+            <form method="POST" style="margin:0">
+              <input type="hidden" name="lien_id" value="<?= $lien['id'] ?>">
+              <button type="submit" name="retirer_favori" class="fav-card__remove" title="Retirer des favoris">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></svg>
+                Retirer
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
-    <?php endforeach; ?>
+      <?php endforeach; ?>
+    </div>
+
+    <script>
+    (function() {
+      var input = document.getElementById('favSearch');
+      var cards = document.querySelectorAll('.fav-card');
+      var noResult = document.getElementById('favNoResult');
+      var count = document.getElementById('favCount');
+
+      input.addEventListener('input', function() {
+        var q = this.value.trim().toLowerCase();
+        var visible = 0;
+        cards.forEach(function(c) {
+          var match = !q
+            || c.dataset.title.includes(q)
+            || c.dataset.cat.includes(q)
+            || c.dataset.desc.includes(q);
+          c.style.display = match ? '' : 'none';
+          if (match) visible++;
+        });
+        noResult.classList.toggle('show', visible === 0);
+        count.textContent = visible + ' FAVORI' + (visible > 1 ? 'S' : '');
+      });
+    })();
+    </script>
+
   <?php endif; ?>
 
 </div>

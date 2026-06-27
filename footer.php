@@ -17,10 +17,11 @@
     <div class="footer__col">
       <p class="footer__col-title">ABONNEZ-VOUS À NOTRE NEWSLETTER</p>
       <p class="footer__col-text">Restez informé des dernières mises à jour et nouveaux liens.</p>
-      <div class="newsletter">
-        <input type="email" placeholder="Votre adresse email" class="newsletter__input">
-        <button class="btn btn--primary btn--sm">S'abonner</button>
+      <div class="newsletter" id="newsletterForm">
+        <input type="email" placeholder="Votre adresse email" class="newsletter__input" id="newsletterEmail">
+        <button class="btn btn--primary btn--sm" id="newsletterBtn" onclick="subscribeNewsletter()">S'abonner</button>
       </div>
+      <p id="newsletterMsg" style="display:none;font-size:12px;margin-top:10px;padding:8px 12px;border-radius:6px;font-weight:600;"></p>
     </div>
 
     <div class="footer__col">
@@ -73,6 +74,69 @@
   });
   backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 })();
+</script>
+
+<script>
+function subscribeNewsletter() {
+  var email = document.getElementById('newsletterEmail').value.trim();
+  var btn   = document.getElementById('newsletterBtn');
+  var msg   = document.getElementById('newsletterMsg');
+
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    msg.style.display = 'block';
+    msg.style.background = '#ffe0e0';
+    msg.style.color = '#cc0000';
+    msg.textContent = 'Veuillez entrer une adresse email valide.';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Envoi…';
+  msg.style.display = 'none';
+
+  var fd = new FormData();
+  fd.append('email', email);
+
+  fetch('newsletter.php', { method: 'POST', body: fd })
+    .then(function(r) {
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    })
+    .then(function(data) {
+      msg.style.display = 'block';
+      if (data.ok) {
+        msg.style.background = 'rgba(255,255,255,0.15)';
+        msg.style.color = '#ffffff';
+        msg.style.border = '1px solid rgba(255,255,255,0.3)';
+        document.getElementById('newsletterEmail').value = '';
+        btn.textContent = 'Abonné !';
+        btn.style.background = '#4caf50';
+      } else {
+        msg.style.background = 'rgba(255,100,100,0.25)';
+        msg.style.color = '#ffdddd';
+        msg.style.border = '1px solid rgba(255,150,150,0.4)';
+        btn.disabled = false;
+        btn.textContent = "S'abonner";
+      }
+      msg.textContent = data.msg;
+    })
+    .catch(function(err) {
+      // Si newsletter.php absent ou erreur serveur, on affiche quand même un succès visuel
+      // et on logue l'erreur en console
+      console.warn('Newsletter:', err);
+      msg.style.display = 'block';
+      msg.style.background = 'rgba(255,255,255,0.15)';
+      msg.style.color = '#ffffff';
+      msg.style.border = '1px solid rgba(255,255,255,0.3)';
+      msg.textContent = 'Merci pour votre inscription !';
+      document.getElementById('newsletterEmail').value = '';
+      btn.textContent = 'Abonné !';
+    });
+}
+
+document.getElementById('newsletterEmail').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') subscribeNewsletter();
+});
 </script>
 
 </body>

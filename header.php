@@ -365,4 +365,92 @@ img { display: block; max-width: 100%; }
 </head>
 <body>
 
+<!-- ══ FOND ANIMÉ : chaînes de liens ══ -->
+<style>
+  #bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    transition: opacity 0.4s ease;
+  }
+  .footer { position: relative; z-index: 2; }
+</style>
+<canvas id="bg-canvas"></canvas>
+<script>
+(function() {
+  var canvas = document.getElementById('bg-canvas');
+  var ctx = canvas.getContext('2d');
+  var W, H, nodes;
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function Node() {
+    this.x  = Math.random() * W;
+    this.y  = Math.random() * H;
+    this.vx = (Math.random() - 0.5) * 0.4;
+    this.vy = (Math.random() - 0.5) * 0.4;
+    this.r  = Math.random() * 2.5 + 1.5;
+  }
+
+  function init() {
+    var count = Math.max(20, Math.floor((W * H) / 20000));
+    nodes = [];
+    for (var i = 0; i < count; i++) nodes.push(new Node());
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    nodes.forEach(function(n) {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+    });
+    var maxDist = 150;
+    for (var i = 0; i < nodes.length; i++) {
+      for (var j = i + 1; j < nodes.length; j++) {
+        var dx = nodes[i].x - nodes[j].x;
+        var dy = nodes[i].y - nodes[j].y;
+        var dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < maxDist) {
+          var alpha = (1 - dist / maxDist) * 0.8;
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(106,13,173,' + alpha + ')';
+          ctx.lineWidth = 1;
+          ctx.setLineDash([5, 7]);
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+      }
+    }
+    nodes.forEach(function(n) {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(106,13,173,0.7)';
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
+  }
+
+  // Cache le canvas dès que le footer entre dans le viewport
+  function checkFooter() {
+    var footer = document.querySelector('.footer');
+    if (!footer) return;
+    var footerTop = footer.getBoundingClientRect().top;
+    canvas.style.opacity = footerTop <= window.innerHeight ? '0' : '0.06';
+  }
+
+  window.addEventListener('scroll', checkFooter, { passive: true });
+  window.addEventListener('resize', function() { resize(); init(); checkFooter(); });
+  resize(); init(); draw();
+})();
+</script>
+
 <?php include 'navbar.php'; ?>
