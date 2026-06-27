@@ -4,15 +4,14 @@
 //  Configuré pour l'hébergement InfinityFree
 // ============================================================
 
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'liens_demarches');
-define('DB_USER', 'root');        // ← modifiez selon votre config
-define('DB_PASS', '');            // ← modifiez selon votre config
+define('DB_HOST', 'sql306.infinityfree.com');
+define('DB_NAME', 'if0_42131220_liens_demarches');
+define('DB_USER', 'if0_42131220');
+define('DB_PASS', 'Xx9uV1TVnT');
 define('DB_CHARSET', 'utf8mb4');
 
 try {
     $dsn = 'mysql:host=' . DB_HOST
-         . ';port=3306'
          . ';dbname=' . DB_NAME
          . ';charset=' . DB_CHARSET;
 
@@ -25,5 +24,7 @@ try {
     $pdo = new PDO($dsn, DB_USER, DB_PASS, $options);
 
 } catch (PDOException $e) {
-    die('Erreur : ' . $e->getMessage());
+    // En production, loguez l'erreur plutôt que de l'afficher
+    error_log($e->getMessage());
+    die(json_encode(['error' => 'Connexion à la base de données impossible.']));
 }

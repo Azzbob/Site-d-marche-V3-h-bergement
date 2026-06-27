@@ -61,6 +61,7 @@
 <button class="back-to-top" id="backToTop" aria-label="Retour en haut">↑</button>
 
 <?= $extra_js ?? '' ?>
+<script src="cookie-consent.js"></script>
 
 <script>
 // Back to top — disponible sur toutes les pages
