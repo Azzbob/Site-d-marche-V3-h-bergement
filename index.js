@@ -23,7 +23,7 @@
   function maxIdx() { return Math.max(0, total - visibleCount()); }
 
   function updateCarousel(animate = true) {
-    track.style.transition = animate ? 'transform .35s ease' : 'none';
+    track.style.transition = animate ? 'transform .25s ease' : 'none';
     track.style.transform  = `translateX(-${idx * ITEM_W}px)`;
   }
 
@@ -43,7 +43,7 @@
   if (nextBtn) nextBtn.addEventListener('click', () => { next(); restartAutoplay(); });
 
   // ── Défilement automatique ──
-  const AUTOPLAY_DELAY = 1500; // ms entre chaque défilement
+  const AUTOPLAY_DELAY = 700; // ms entre chaque défilement
   let autoplayTimer = null;
 
   function startAutoplay() {
