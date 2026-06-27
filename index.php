@@ -97,7 +97,38 @@ include 'header.php';
 
     <div class="why__visual">
       <div class="why__icon-wrap">
-        <img src="img/icone-question.png" alt="?" class="why__icon">
+        <!-- Icône "Pourquoi ce site ?" — SVG inline (remplace img/icone-question.png) -->
+        <svg class="why__icon" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Pourquoi ce site ?">
+          <!-- Fond cercle dégradé -->
+          <defs>
+            <radialGradient id="gWhy" cx="40%" cy="35%" r="70%">
+              <stop offset="0%" stop-color="#9b30ff" stop-opacity="0.18"/>
+              <stop offset="100%" stop-color="#3b006e" stop-opacity="0.06"/>
+            </radialGradient>
+          </defs>
+          <circle cx="90" cy="90" r="82" fill="url(#gWhy)" stroke="rgba(106,13,173,0.15)" stroke-width="1.5"/>
+
+          <!-- Point d'interrogation stylisé -->
+          <text x="90" y="118" text-anchor="middle" font-size="90" font-family="'Segoe UI',system-ui,sans-serif" font-weight="700" fill="none" stroke="rgba(106,13,173,0.18)" stroke-width="3">?</text>
+          <text x="90" y="118" text-anchor="middle" font-size="90" font-family="'Segoe UI',system-ui,sans-serif" font-weight="700" fill="rgba(106,13,173,0.22)">?</text>
+
+          <!-- Petites icônes autour -->
+          <!-- Document haut-gauche -->
+          <rect x="22" y="28" width="24" height="30" rx="3" fill="rgba(106,13,173,0.10)" stroke="rgba(106,13,173,0.25)" stroke-width="1.2"/>
+          <rect x="27" y="35" width="14" height="2" rx="1" fill="rgba(106,13,173,0.3)"/>
+          <rect x="27" y="40" width="10" height="2" rx="1" fill="rgba(106,13,173,0.22)"/>
+          <rect x="27" y="45" width="12" height="2" rx="1" fill="rgba(106,13,173,0.18)"/>
+
+          <!-- Euro haut-droite -->
+          <circle cx="148" cy="40" r="18" fill="rgba(155,48,255,0.09)" stroke="rgba(155,48,255,0.22)" stroke-width="1.2"/>
+          <text x="148" y="47" text-anchor="middle" font-size="18" font-family="system-ui" fill="rgba(106,13,173,0.35)">€</text>
+
+          <!-- Maison bas-gauche -->
+          <path d="M38 150l-14-12h5V126h18v12h5z" fill="rgba(59,0,110,0.09)" stroke="rgba(59,0,110,0.22)" stroke-width="1.2" stroke-linejoin="round"/>
+
+          <!-- Cœur bas-droite -->
+          <path d="M148 142s-10-6.5-10-12a5.5 5.5 0 0 1 10-2.7 5.5 5.5 0 0 1 10 2.7c0 5.5-10 12-10 12z" fill="rgba(155,48,255,0.10)" stroke="rgba(155,48,255,0.25)" stroke-width="1.2"/>
+        </svg>
       </div>
     </div>
 
@@ -137,7 +168,75 @@ include 'header.php';
     </div>
 
     <div class="how__visual">
-      <img src="img/how-laptop.jpg" alt="Utilisation du site" class="how__img">
+      <!-- Illustration "Comment utiliser" — SVG inline (remplace img/how-laptop.jpg) -->
+      <svg class="how__img" viewBox="0 0 560 280" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Illustration utilisation du site">
+        <defs>
+          <linearGradient id="gScreen" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#f8f3ff"/>
+            <stop offset="100%" stop-color="#ede0ff"/>
+          </linearGradient>
+          <linearGradient id="gBase" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#c9a0f0"/>
+            <stop offset="100%" stop-color="#a060d0"/>
+          </linearGradient>
+          <filter id="shadowLaptop" x="-10%" y="-10%" width="120%" height="140%">
+            <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="rgba(106,13,173,0.22)"/>
+          </filter>
+        </defs>
+
+        <!-- Arrière-plan doux -->
+        <rect width="560" height="280" rx="16" fill="rgba(240,230,250,0.35)"/>
+
+        <!-- Laptop — corps -->
+        <g filter="url(#shadowLaptop)">
+          <!-- Écran -->
+          <rect x="100" y="20" width="360" height="210" rx="12" fill="#2a0060" stroke="#6a0dad" stroke-width="2"/>
+          <!-- Écran intérieur -->
+          <rect x="114" y="34" width="332" height="182" rx="6" fill="url(#gScreen)"/>
+
+          <!-- Contenu de l'écran — mini navbar -->
+          <rect x="114" y="34" width="332" height="28" rx="6" fill="#6a0dad"/>
+          <rect x="114" y="56" width="332" height="6" rx="0" fill="#6a0dad"/>
+          <circle cx="130" cy="48" r="5" fill="rgba(255,255,255,0.4)"/>
+          <rect x="150" y="44" width="50" height="8" rx="4" fill="rgba(255,255,255,0.3)"/>
+          <rect x="210" y="44" width="40" height="8" rx="4" fill="rgba(255,255,255,0.2)"/>
+          <rect x="380" y="42" width="55" height="12" rx="6" fill="rgba(255,255,255,0.15)"/>
+
+          <!-- Barre de recherche -->
+          <rect x="140" y="76" width="220" height="22" rx="11" fill="white" stroke="rgba(106,13,173,0.2)" stroke-width="1"/>
+          <circle cx="347" cy="87" r="9" fill="#6a0dad"/>
+          <text x="347" y="92" text-anchor="middle" font-size="10" fill="white">→</text>
+
+          <!-- Cards liens -->
+          <rect x="130" y="112" width="300" height="36" rx="8" fill="white" stroke="rgba(106,13,173,0.12)" stroke-width="1"/>
+          <rect x="142" y="121" width="28" height="18" rx="4" fill="rgba(106,13,173,0.08)" stroke="rgba(106,13,173,0.15)" stroke-width="0.8"/>
+          <rect x="178" y="124" width="70" height="7" rx="3" fill="rgba(106,13,173,0.18)"/>
+          <rect x="178" y="134" width="50" height="5" rx="2.5" fill="rgba(106,13,173,0.10)"/>
+          <rect x="360" y="124" width="55" height="16" rx="8" fill="rgba(106,13,173,0.08)"/>
+
+          <rect x="130" y="154" width="300" height="36" rx="8" fill="white" stroke="rgba(106,13,173,0.12)" stroke-width="1"/>
+          <rect x="142" y="163" width="28" height="18" rx="4" fill="rgba(155,48,255,0.08)" stroke="rgba(155,48,255,0.15)" stroke-width="0.8"/>
+          <rect x="178" y="166" width="85" height="7" rx="3" fill="rgba(106,13,173,0.15)"/>
+          <rect x="178" y="176" width="55" height="5" rx="2.5" fill="rgba(106,13,173,0.08)"/>
+          <rect x="360" y="166" width="55" height="16" rx="8" fill="rgba(245,158,11,0.12)"/>
+          <text x="387" y="178" text-anchor="middle" font-size="8" fill="rgba(180,120,0,0.7)">★ favori</text>
+
+          <!-- Socle laptop -->
+          <rect x="130" y="232" width="300" height="14" rx="4" fill="url(#gBase)"/>
+          <rect x="180" y="246" width="200" height="6" rx="3" fill="#b88de0"/>
+        </g>
+
+        <!-- Curseur souris -->
+        <g transform="translate(310,155)">
+          <path d="M0 0 L0 18 L4.5 14 L7 20 L9 19 L6.5 13 L12 13 Z" fill="white" stroke="#6a0dad" stroke-width="1.2" stroke-linejoin="round"/>
+        </g>
+
+        <!-- Étoiles décoratives -->
+        <circle cx="80" cy="60" r="4" fill="rgba(106,13,173,0.2)"/>
+        <circle cx="490" cy="200" r="5" fill="rgba(155,48,255,0.18)"/>
+        <circle cx="70" cy="220" r="3" fill="rgba(59,0,110,0.15)"/>
+        <circle cx="500" cy="50" r="3" fill="rgba(106,13,173,0.15)"/>
+      </svg>
     </div>
 
   </div>
