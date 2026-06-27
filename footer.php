@@ -38,7 +38,7 @@
         <li><a href="confidentialite.php">Politique de Confidentialité</a></li>
         <li><a href="cookies.php">Politique relative aux cookies</a></li>
         <li><a href="configuration-cookies.php">Configuration des cookies</a></li>
-        <li><a href="cgv.php">Conditions générales de ventes</a></li>
+        <li><a href="conditions.php">Conditions d'utilisation</a></li>
       </ul>
     </div>
 
