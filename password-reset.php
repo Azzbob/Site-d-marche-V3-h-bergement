@@ -149,9 +149,15 @@ function password_reset_send_email(string $email, string $prenom, string $resetL
       </div>
     </div>';
 
-    $headers  = "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-    $headers .= "From: Liens Démarches <no-reply@liens-demarches.fr>\r\n";
+    require_once __DIR__ . '/smtp-config.php';
+    require_once __DIR__ . '/smtp-mailer.php';
 
-    return @mail($email, $sujet, $corpsHtml, $headers);
+    $envoye = smtp_send_mail($email, $sujet, $corpsHtml);
+
+    if (!$envoye) {
+        // Log l'erreur SMTP détaillée pour le débogage (jamais affichée à l'utilisateur)
+        error_log('Erreur envoi email reset password: ' . ($GLOBALS['smtp_last_error'] ?? 'inconnue'));
+    }
+
+    return $envoye;
 }
