@@ -55,7 +55,7 @@ function smtp_send_mail(string $to, string $subject, string $htmlBody): bool
     $resp = $read();
     if (!$expect($resp, '220')) { $GLOBALS['smtp_last_error'] = "Pas de bienvenue serveur: $resp"; fclose($socket); return false; }
 
-    $write('EHLO ' . parse_url(SMTP_FROM_EMAIL, PHP_URL_HOST) ?: 'localhost');
+    $write('EHLO ' . (parse_url(SMTP_FROM_EMAIL, PHP_URL_HOST) ?: 'localhost'));
     $resp = $read();
     if (!$expect($resp, '250')) { $GLOBALS['smtp_last_error'] = "EHLO refusé: $resp"; fclose($socket); return false; }
 
@@ -70,7 +70,7 @@ function smtp_send_mail(string $to, string $subject, string $htmlBody): bool
     }
 
     // Second EHLO obligatoire après le TLS
-    $write('EHLO ' . parse_url(SMTP_FROM_EMAIL, PHP_URL_HOST) ?: 'localhost');
+    $write('EHLO ' . (parse_url(SMTP_FROM_EMAIL, PHP_URL_HOST) ?: 'localhost'));
     $resp = $read();
     if (!$expect($resp, '250')) { $GLOBALS['smtp_last_error'] = "EHLO (TLS) refusé: $resp"; fclose($socket); return false; }
 
