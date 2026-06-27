@@ -84,7 +84,7 @@ include 'header.php';
       <li>droit à la portabilité des données.</li>
     </ul>
     <p>Vous pouvez exercer ces droits à tout moment en nous contactant à :</p>
-    <p>Email : <a href="mailto:katafiayoub2@gmail.com">katafiayoub2@gmail.com</a></p>
+    <p>Email : <a href="mailto:azebob95@gmail.com">azebob95@gmail.com</a></p>
     <p>En cas de réclamation, vous pouvez également saisir la Commission Nationale de l'Informatique et des Libertés (CNIL).</p>
   </section>
 

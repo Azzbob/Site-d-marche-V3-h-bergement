@@ -29,7 +29,7 @@ include 'header.php';
     <p>Le présent site est édité à titre non professionnel par une personne physique.</p>
     <p>Pour toute demande d'information ou de signalement, vous pouvez nous contacter à l'adresse suivante :</p>
     <ul>
-      <li>Contact : <a href="mailto:katafiayoub2@gmail.com">katafiayoub2@gmail.com</a></li>
+      <li>Contact : <a href="mailto:azebob95@gmail.com">azebob95@gmail.com</a></li>
     </ul>
   </section>
 
@@ -43,7 +43,7 @@ include 'header.php';
     <p>Le site est hébergé par :</p>
     <ul>
       <li>InfinityFree (iFastNet Ltd)</li>
-      <li>Contact technique : <a href="mailto:katafiayoub2@gmail.com">katafiayoub2@gmail.com</a></li>
+      <li>Contact technique : <a href="mailto:azebob95@gmail.com">azebob95@gmail.com</a></li>
       <li>06 02 46 93 14</li>
     </ul>
   </section>

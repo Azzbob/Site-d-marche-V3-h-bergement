@@ -70,7 +70,7 @@ include 'header.php';
   <section class="legal-section">
     <h2>05. Plus d'informations</h2>
     <p>Pour toute question relative aux cookies ou à la protection de vos données personnelles, vous pouvez nous contacter à :</p>
-    <p>Email : <a href="mailto:katafiayoub2@gmail.com">katafiayoub2@gmail.com</a></p>
+    <p>Email : <a href="mailto:azebob95@gmail.com">azebob95@gmail.com</a></p>
   </section>
 
   <p class="legal-update">Dernière mise à jour : <?= date('d/m/Y') ?></p>
