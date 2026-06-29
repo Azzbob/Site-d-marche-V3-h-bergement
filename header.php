@@ -7,7 +7,7 @@
   <title><?= $page_title ?? 'Liens Démarches' ?></title>
   <style>
 /* ============================================================
-   reset.css + header.css + footer.css + FOND ANIMÉ GLOBAL
+   reset.css + header.css + footer.css
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -31,7 +31,7 @@ html {
 }
 body {
   font-family: var(--font-main);
-  background: transparent; /* transparent pour laisser le fond animé visible */
+  background: var(--bg);
   color: var(--text);
   font-size: 15px;
   line-height: 1.6;
@@ -40,89 +40,6 @@ body {
 a { color: inherit; text-decoration: none; }
 img { display: block; max-width: 100%; }
 
-/* ══════════════════════════════════════════
-   FOND ANIMÉ GLOBAL — Icônes flottantes
-   (s'affiche sur toutes les pages SAUF connexion/inscription)
-══════════════════════════════════════════ */
-.animated-bg {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  z-index: -1;
-  pointer-events: none;
-  overflow: hidden;
-}
-
-/* Chaque icône flottante */
-.animated-bg__icon {
-  position: absolute;
-  opacity: 0;
-  will-change: transform, opacity;
-  animation: iconFloat linear infinite;
-  filter: blur(0px);
-}
-
-@keyframes iconFloat {
-  0%   {
-    transform: translateY(105vh) rotate(0deg) scale(0.7);
-    opacity: 0;
-  }
-  8%   { opacity: 1; }
-  90%  { opacity: 0.45; }
-  100% {
-    transform: translateY(-15vh) rotate(540deg) scale(1.1);
-    opacity: 0;
-  }
-}
-
-/* Vague parallaxe bas de page */
-.animated-bg__wave {
-  position: absolute;
-  bottom: -2px;
-  left: -5%;
-  width: 110%;
-  pointer-events: none;
-  will-change: transform;
-  transition: transform 0.1s linear;
-}
-
-/* Halo dégradé doux qui pulse */
-.animated-bg__halo {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  filter: blur(80px);
-  animation: haloPulse ease-in-out infinite alternate;
-}
-
-.animated-bg__halo--tl {
-  width: 500px; height: 500px;
-  top: -100px; left: -150px;
-  background: radial-gradient(circle, rgba(106,13,173,0.07) 0%, transparent 70%);
-  animation-duration: 9s;
-}
-
-.animated-bg__halo--br {
-  width: 600px; height: 400px;
-  bottom: -80px; right: -120px;
-  background: radial-gradient(circle, rgba(155,48,255,0.05) 0%, transparent 70%);
-  animation-duration: 13s;
-  animation-delay: -4s;
-}
-
-.animated-bg__halo--mid {
-  width: 350px; height: 350px;
-  top: 40%; left: 35%;
-  background: radial-gradient(circle, rgba(59,0,110,0.04) 0%, transparent 70%);
-  animation-duration: 11s;
-  animation-delay: -2s;
-}
-
-@keyframes haloPulse {
-  0%   { transform: scale(1) translate(0, 0); opacity: 1; }
-  100% { transform: scale(1.25) translate(20px, -15px); opacity: 0.6; }
-}
-
-/* Le fond est en dessous grâce au z-index: 0 du .animated-bg — pas besoin de z-index sur les enfants */
 
 /* ── NAVBAR ── */
 .navbar {
@@ -329,168 +246,246 @@ img { display: block; max-width: 100%; }
   .footer__col-text, .footer__list a { font-size: 12px; }
 }
 
-/* Reduced motion */
+}
+
+/* ═══════════════════════════════════════════════════════════
+   FOND GLOBAL — Orbes animées (CSS pur, position:fixed,
+   zéro impact layout, exclues des pages légales/auth)
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Fond dégradé de base sur html ── */
+html.with-bg {
+  background: linear-gradient(160deg, #0d001f 0%, #1a0035 40%, #0a0018 100%);
+}
+html.with-bg body {
+  background: transparent;
+}
+
+/* ── Conteneur fixed ── */
+.site-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* ── Les orbes ── */
+.site-bg__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: orbFloat ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.site-bg__orb--1 {
+  width: 600px; height: 600px;
+  top: -150px; left: -150px;
+  background: radial-gradient(circle, rgba(138,43,226,0.55) 0%, rgba(106,13,173,0.25) 50%, transparent 70%);
+  animation-duration: 11s;
+  animation-delay: 0s;
+}
+.site-bg__orb--2 {
+  width: 500px; height: 500px;
+  top: 20%; right: -100px;
+  background: radial-gradient(circle, rgba(180,0,255,0.40) 0%, rgba(120,0,200,0.15) 50%, transparent 70%);
+  animation-duration: 14s;
+  animation-delay: -4s;
+}
+.site-bg__orb--3 {
+  width: 450px; height: 450px;
+  bottom: 5%; left: 10%;
+  background: radial-gradient(circle, rgba(75,0,160,0.45) 0%, rgba(50,0,120,0.20) 50%, transparent 70%);
+  animation-duration: 17s;
+  animation-delay: -8s;
+}
+.site-bg__orb--4 {
+  width: 350px; height: 350px;
+  bottom: 20%; right: 5%;
+  background: radial-gradient(circle, rgba(200,100,255,0.30) 0%, rgba(150,50,220,0.12) 50%, transparent 70%);
+  animation-duration: 13s;
+  animation-delay: -2s;
+}
+.site-bg__orb--5 {
+  width: 300px; height: 300px;
+  top: 45%; left: 38%;
+  background: radial-gradient(circle, rgba(255,150,255,0.18) 0%, rgba(200,80,255,0.08) 50%, transparent 70%);
+  animation-duration: 19s;
+  animation-delay: -10s;
+}
+
+@keyframes orbFloat {
+  0%   { transform: translate(0px, 0px) scale(1); }
+  33%  { transform: translate(30px, -20px) scale(1.05); }
+  66%  { transform: translate(-15px, 25px) scale(0.97); }
+  100% { transform: translate(20px, 10px) scale(1.03); }
+}
+
+/* ── Grille de points (noise texture) ── */
+.site-bg__dots {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
+  background-size: 40px 40px;
+  animation: dotsShift 30s linear infinite;
+}
+
+@keyframes dotsShift {
+  0%   { background-position: 0 0; }
+  100% { background-position: 40px 40px; }
+}
+
+/* ── Lignes diagonales subtiles ── */
+.site-bg__lines {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(45deg, rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(-45deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* ── Éclat central lumineux ── */
+.site-bg__glow {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 800px; height: 400px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse, rgba(120,0,200,0.12) 0%, transparent 70%);
+  animation: glowPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes glowPulse {
+  0%   { opacity: 0.6; transform: translate(-50%,-50%) scale(1); }
+  100% { opacity: 1;   transform: translate(-50%,-50%) scale(1.15); }
+}
+
+/* ── Vignette sur les bords ── */
+.site-bg__vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.45) 100%);
+}
+
+/* ── Étoiles statiques (CSS box-shadow trick) ── */
+.site-bg__stars {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(255,255,255,0.6) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,0.4) 1px, transparent 1px),
+    radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px);
+  background-size: 300px 300px, 500px 500px, 700px 700px;
+  background-position: 0 0, 150px 80px, 300px 200px;
+  animation: starsScroll 60s linear infinite;
+}
+
+@keyframes starsScroll {
+  0%   { background-position: 0 0, 150px 80px, 300px 200px; }
+  100% { background-position: 300px 300px, 450px 380px, 600px 500px; }
+}
+
+/* ── Adapt couleur body/cards pour contraster sur fond sombre ── */
+html.with-bg .lien-card,
+html.with-bg .cat-card {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+html.with-bg .lien-card:hover {
+  background: rgba(255,255,255,0.10) !important;
+  border-color: rgba(180,80,255,0.35) !important;
+}
+html.with-bg .lien-card__title,
+html.with-bg .cat-count,
+html.with-bg .lien-card__cat {
+  color: rgba(255,255,255,0.9) !important;
+}
+html.with-bg .lien-card__url { color: #c084fc !important; }
+html.with-bg .lien-card__url:hover { color: #e9d5ff !important; }
+html.with-bg .lien-card__fav { color: rgba(255,255,255,0.45) !important; }
+html.with-bg .lien-card__fav:hover { color: #f59e0b !important; }
+
+/* sections avec fond blanc/clair deviennent glassmorphism */
+html.with-bg .section--why,
+html.with-bg .section--how,
+html.with-bg .section--links,
+html.with-bg .section--cta,
+html.with-bg .cat-content,
+html.with-bg .page-header {
+  background: transparent !important;
+}
+
+html.with-bg .why__content p,
+html.with-bg .how__content p,
+html.with-bg .section__label,
+html.with-bg .cat-count {
+  color: rgba(255,255,255,0.75) !important;
+}
+html.with-bg h1, html.with-bg h2, html.with-bg h3 {
+  color: #ffffff !important;
+}
+
+/* Barre de recherche glassmorphism */
+html.with-bg .search-bar {
+  background: rgba(255,255,255,0.08) !important;
+  border-color: rgba(255,255,255,0.18) !important;
+  backdrop-filter: blur(16px) !important;
+}
+html.with-bg .search-bar input {
+  background: transparent !important;
+  color: #ffffff !important;
+}
+html.with-bg .search-bar input::placeholder { color: rgba(255,255,255,0.45) !important; }
+
+/* Favoris page */
+html.with-bg .favoris-card,
+html.with-bg .mon-compte-card {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(255,255,255,0.12) !important;
+  backdrop-filter: blur(12px);
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .animated-bg__icon,
-  .animated-bg__halo { animation: none !important; opacity: 0.06 !important; }
+  .site-bg__orb { animation: none !important; }
+  .site-bg__dots { animation: none !important; }
+  .site-bg__glow { animation: none !important; }
+  .site-bg__stars { animation: none !important; }
 }
-/* Sur mobile : icônes plus petites et moins intrusives */
-@media (max-width: 768px) {
-  .animated-bg__icon { opacity: 0.7 !important; }
-  .animated-bg__halo { filter: blur(60px) !important; }
-}
+
   </style>
   <?= $extra_css ?? '' ?>
 </head>
 <body>
 
+
 <?php
-// Affiche le fond animé sur toutes les pages SAUF connexion et inscription
-$page_actuelle = basename($_SERVER['PHP_SELF'] ?? '');
-$pages_sans_fond = ['connexion.php', 'inscription.php'];
-$afficher_fond = !in_array($page_actuelle, $pages_sans_fond);
-
-if ($afficher_fond):
-?>
-<!-- ══ FOND ANIMÉ GLOBAL ══ -->
-<div class="animated-bg" id="animatedBg" aria-hidden="true">
-
-  <!-- Halos de fond -->
-  <div class="animated-bg__halo animated-bg__halo--tl"></div>
-  <div class="animated-bg__halo animated-bg__halo--br"></div>
-  <div class="animated-bg__halo animated-bg__halo--mid"></div>
-
-  <!-- Icônes administratives flottantes (SVG inline) -->
-  <!-- Document / Formulaire -->
-  <div class="animated-bg__icon" style="left:8%;animation-duration:18s;animation-delay:-3s;width:38px;height:38px;">
-    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="6" y="3" width="22" height="28" rx="3" fill="rgba(106,13,173,0.13)" stroke="rgba(106,13,173,0.25)" stroke-width="1.5"/>
-      <rect x="10" y="9" width="14" height="2" rx="1" fill="rgba(106,13,173,0.3)"/>
-      <rect x="10" y="14" width="10" height="2" rx="1" fill="rgba(106,13,173,0.25)"/>
-      <rect x="10" y="19" width="12" height="2" rx="1" fill="rgba(106,13,173,0.2)"/>
-      <rect x="10" y="24" width="8" height="2" rx="1" fill="rgba(106,13,173,0.18)"/>
-    </svg>
-  </div>
-
-  <!-- Maison / Logement -->
-  <div class="animated-bg__icon" style="left:20%;animation-duration:22s;animation-delay:-8s;width:42px;height:42px;">
-    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 6L6 18h4v14h8V24h4v8h8V18h4L20 6z" fill="rgba(155,48,255,0.12)" stroke="rgba(155,48,255,0.28)" stroke-width="1.4" stroke-linejoin="round"/>
-    </svg>
-  </div>
-
-  <!-- Cœur / Santé / CAF -->
-  <div class="animated-bg__icon" style="left:35%;animation-duration:16s;animation-delay:-1s;width:34px;height:34px;">
-    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 33s-13-8.5-13-16a7 7 0 0 1 13-3.5A7 7 0 0 1 33 17c0 7.5-13 16-13 16z" fill="rgba(106,13,173,0.10)" stroke="rgba(106,13,173,0.22)" stroke-width="1.5"/>
-    </svg>
-  </div>
-
-  <!-- Euro / Finances -->
-  <div class="animated-bg__icon" style="left:55%;animation-duration:20s;animation-delay:-12s;width:36px;height:36px;">
-    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="20" cy="20" r="14" fill="rgba(59,0,110,0.08)" stroke="rgba(59,0,110,0.2)" stroke-width="1.5"/>
-      <text x="20" y="26" text-anchor="middle" font-size="16" fill="rgba(106,13,173,0.35)" font-family="system-ui">€</text>
-    </svg>
-  </div>
-
-  <!-- Valise / Travail -->
-  <div class="animated-bg__icon" style="left:70%;animation-duration:25s;animation-delay:-5s;width:40px;height:40px;">
-    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="5" y="15" width="30" height="20" rx="3" fill="rgba(155,48,255,0.09)" stroke="rgba(155,48,255,0.22)" stroke-width="1.5"/>
-      <path d="M15 15V11a5 5 0 0 1 10 0v4" stroke="rgba(155,48,255,0.28)" stroke-width="1.5" stroke-linecap="round"/>
-      <line x1="20" y1="15" x2="20" y2="35" stroke="rgba(155,48,255,0.15)" stroke-width="1.2"/>
-    </svg>
-  </div>
-
-  <!-- Roue dentée / Services -->
-  <div class="animated-bg__icon" style="left:85%;animation-duration:19s;animation-delay:-9s;width:38px;height:38px;">
-    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 12a8 8 0 1 0 0 16 8 8 0 0 0 0-16zm0 4a4 4 0 1 1 0 8 4 4 0 0 1 0-8z" fill="rgba(106,13,173,0.12)" stroke="rgba(106,13,173,0.22)" stroke-width="0.5"/>
-      <path d="M18 6h4v4h-4zM18 30h4v4h-4zM6 18v4h4v-4zM30 18v4h4v-4z" fill="rgba(106,13,173,0.15)"/>
-    </svg>
-  </div>
-
-  <!-- Étoile / Favoris -->
-  <div class="animated-bg__icon" style="left:48%;animation-duration:14s;animation-delay:-6s;width:32px;height:32px;">
-    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 5l3.9 8.6 9.1 1.3-6.6 6.5 1.6 9.1L20 26l-8 4.5 1.6-9.1L7 14.9l9.1-1.3z" fill="rgba(155,48,255,0.10)" stroke="rgba(155,48,255,0.25)" stroke-width="1.4" stroke-linejoin="round"/>
-    </svg>
-  </div>
-
-  <!-- Retraite / Personne âgée -->
-  <div class="animated-bg__icon" style="left:62%;animation-duration:21s;animation-delay:-15s;width:36px;height:36px;">
-    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="20" cy="10" r="5" fill="rgba(106,13,173,0.10)" stroke="rgba(106,13,173,0.22)" stroke-width="1.4"/>
-      <path d="M12 30c0-6 3.5-10 8-10s8 4 8 10" stroke="rgba(106,13,173,0.22)" stroke-width="1.4" fill="rgba(106,13,173,0.06)" stroke-linecap="round"/>
-      <line x1="14" y1="28" x2="11" y2="35" stroke="rgba(106,13,173,0.2)" stroke-width="1.4" stroke-linecap="round"/>
-    </svg>
-  </div>
-
-  <!-- Enveloppe / Contact -->
-  <div class="animated-bg__icon" style="left:28%;animation-duration:17s;animation-delay:-11s;width:40px;height:40px;">
-    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="5" y="11" width="30" height="20" rx="3" fill="rgba(59,0,110,0.08)" stroke="rgba(59,0,110,0.2)" stroke-width="1.5"/>
-      <path d="M5 14l15 10 15-10" stroke="rgba(59,0,110,0.22)" stroke-width="1.4" stroke-linecap="round"/>
-    </svg>
-  </div>
-
-  <!-- Vague de fond qui suit le scroll -->
-  <svg class="animated-bg__wave" viewBox="0 0 1440 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-    <path d="M0,60 C240,120 480,0 720,60 C960,120 1200,0 1440,60 L1440,120 L0,120 Z" fill="rgba(106,13,173,0.04)"/>
-    <path d="M0,80 C360,20 720,120 1080,40 C1260,0 1380,60 1440,80 L1440,120 L0,120 Z" fill="rgba(155,48,255,0.03)"/>
-  </svg>
+/* ── Fond activé sur toutes les pages sauf auth + légales ── */
+$_bg_exclus = [
+  'connexion.php','inscription.php',
+  'conditions.php','confidentialite.php','mentions-legales.php',
+  'cgv.php','cookies.php','configuration-cookies.php','faq.php','contact.php',
+];
+$_page_courante = basename($_SERVER['PHP_SELF'] ?? '');
+$_avec_bg = !in_array($_page_courante, $_bg_exclus);
+if ($_avec_bg): ?>
+<div class="site-bg" aria-hidden="true">
+  <div class="site-bg__stars"></div>
+  <div class="site-bg__dots"></div>
+  <div class="site-bg__lines"></div>
+  <div class="site-bg__orb site-bg__orb--1"></div>
+  <div class="site-bg__orb site-bg__orb--2"></div>
+  <div class="site-bg__orb site-bg__orb--3"></div>
+  <div class="site-bg__orb site-bg__orb--4"></div>
+  <div class="site-bg__orb site-bg__orb--5"></div>
+  <div class="site-bg__glow"></div>
+  <div class="site-bg__vignette"></div>
 </div>
-
-<script>
-// Fond animé : effet parallaxe au scroll + souris
-(function () {
-  var bg   = document.getElementById('animatedBg');
-  if (!bg) return;
-  var wave = bg.querySelector('.animated-bg__wave');
-  var icons = Array.from(bg.querySelectorAll('.animated-bg__icon'));
-
-  var scrollY = 0, mouseX = 0.5, mouseY = 0.5;
-  var rafPending = false;
-
-  function render() {
-    rafPending = false;
-
-    // Vague qui monte légèrement au scroll
-    if (wave) {
-      wave.style.transform = 'translateY(' + (-scrollY * 0.08) + 'px)';
-    }
-
-    // Icônes : léger déport horizontal selon scroll + souris
-    icons.forEach(function (icon, i) {
-      var scrollFactor = (i % 3 === 0 ? 0.06 : i % 3 === 1 ? -0.04 : 0.03);
-      var mouseFactor  = (i % 4 + 1) * 0.004;
-      var dx = (mouseX - 0.5) * 40 * mouseFactor;
-      var dy = scrollY * scrollFactor;
-      icon.style.marginLeft  = dx.toFixed(1) + 'px';
-      icon.style.marginBottom = dy.toFixed(1) + 'px';
-    });
-  }
-
-  function tick() { if (!rafPending) { rafPending = true; requestAnimationFrame(render); } }
-
-  window.addEventListener('scroll', function () { scrollY = window.scrollY; tick(); }, { passive: true });
-  window.addEventListener('mousemove', function (e) {
-    mouseX = e.clientX / window.innerWidth;
-    mouseY = e.clientY / window.innerHeight;
-    tick();
-  }, { passive: true });
-
-  // Gyroscope mobile
-  if (window.DeviceOrientationEvent) {
-    window.addEventListener('deviceorientation', function (e) {
-      mouseX = 0.5 + (e.gamma || 0) / 90 * 0.5;
-      mouseY = 0.5 + (e.beta  || 0) / 180 * 0.5;
-      tick();
-    }, { passive: true });
-  }
-})();
-</script>
+<script>if(document.documentElement)document.documentElement.classList.add('with-bg');</script>
 <?php endif; ?>
 
 <?php include 'navbar.php'; ?>
